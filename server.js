@@ -4,7 +4,7 @@
 const express = require('express');
 const cors = require('cors');
 const superagent = require('superagent');
-// const pg = require('pg');
+const pg = require('pg');
 require('dotenv').config();
 
 
@@ -13,8 +13,9 @@ require('dotenv').config();
 const app = express();
 //enables local processes to talk to the server
 app.use(cors());
-// const client = new pageXOffset.Client(process.env.DATABASE_URL);
-// client.on('error', err => console.log(err));
+const client = new pg.Client(process.env.DATABASE_URL);
+client.on('error', err => console.log(err));//method
+
 
 const PORT = process.env.PORT || 3008;
 
@@ -31,21 +32,25 @@ app.get('/weather', handleGetWeather);
 app.get('/parks', handleParks);
 
 function locationCallback(req, res) {
-  console.log(req.query);
 
-  const city = req.query.city;
+  const sqlQueryStr = 'SELECT * FROM cities WHERE search_query=$1';
+  const sqlQueryArr = [req.query.city];
 
-  const url = `https://us1.locationiq.com/v1/search.php?key=${GEOCODE_KEY}&q=${city}&format=json`;
+  client.query(sqlQueryStr, sqlQueryArr)
+    .then(result => {
+      if(result.rows.length > 0){
+        res.send(result.row[0])
+      } else {
+        const city = req.query.city;
+        const url =   const url = `https://us1.locationiq.com/v1/search.php?key=${GEOCODE_KEY}&q=${city}&format=json`;
 
   superagent.get(url)
     .then(userData => {
       const output = new Location(userData.body, req.query.city);
 
       res.send(output);
-    })
-    .catch(errorThatComesBack => {
-      console.log(errorThatComesBack);
-      res.status(500).send('Sorry something went wrong');
+    });
+    }
     });
 }
 
@@ -82,7 +87,6 @@ function handleParks(req, res) {
 
   superagent.get(url)
     .then(userData => {
-      // const output = new Park(userData.body, req.query.city);
       const output = [];
       for (let i = 0; i < userData.body.data.length; i++) {
         output.push(new Park(userData.body.data[i]));
@@ -104,12 +108,7 @@ function Park(userData) {
 }
 
 //_______Initialization______
-app.listen(PORT, () => {
-  console.log(`App is up on http://${PORT}.`);
-});
-
-// client.connect()
-//   .then(()=>{
-//     app.listen(PORT, console.log(`App is up on http://${PORT}.`)
-//     );
-//   });
+client.connect()
+  .then(()=>{
+    app.listen(PORT, console.log(`App is up on http://${PORT}.`));
+  });
