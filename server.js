@@ -30,6 +30,12 @@ const PARKS_KEY = process.env.PARKS_API_KEY;
 app.get('/location', locationCallback);
 app.get('/weather', handleGetWeather);
 app.get('/parks', handleParks);
+// app.get('/yelp', getYelp);
+
+// function getYelp(req, res) {
+//   const
+// }
+// ?/limit --- find the rest of this in the yelp API. Start = 5? Use if statement
 
 function locationCallback(req, res) {
 
@@ -38,19 +44,19 @@ function locationCallback(req, res) {
 
   client.query(sqlQueryStr, sqlQueryArr)
     .then(result => {
-      if(result.rows.length > 0){
-        res.send(result.row[0])
+      if (result.rows.length > 0) {
+        res.send(result.row[0]);
       } else {
         const city = req.query.city;
-        const url =   const url = `https://us1.locationiq.com/v1/search.php?key=${GEOCODE_KEY}&q=${city}&format=json`;
+        const url = `https://us1.locationiq.com/v1/search.php?key=${GEOCODE_KEY}&q=${city}&format=json`;
 
-  superagent.get(url)
-    .then(userData => {
-      const output = new Location(userData.body, req.query.city);
+        superagent.get(url)
+          .then(userData => {
+            const output = new Location(userData.body, req.query.city);
 
-      res.send(output);
-    });
-    }
+            res.send(output);
+          });
+      }
     });
 }
 
@@ -85,18 +91,26 @@ function handleParks(req, res) {
   const park = req.query.search_query;
   const url = `https://developer.nps.gov/api/v1/parks?q=${park}&api_key=${PARKS_KEY}`;
 
-  superagent.get(url)
-    .then(userData => {
-      const output = [];
-      for (let i = 0; i < userData.body.data.length; i++) {
-        output.push(new Park(userData.body.data[i]));
-      }
-      res.send(output);
-    })
-    .catch(errorThatComesBack => {
-      console.log(errorThatComesBack);
-      res.status(500).send('Sorry something went wrong');
+  superagent.get(url).then(returnedPark => {
+    const arr = returnedPark.body.data;
+    const output = arr.map(park => new Park(park));
+    res.send(output);
+  })
+    .catch(error => {
+      console.log(error);
+      res.status(500).send('Ooops, I broke it again');
     });
+  // .then(userData => {
+  //   const output = [];
+  //   for (let i = 0; i < userData.body.data.length; i++) {
+  //     output.push(new Park(userData.body.data[i]));
+  //   }
+  //   res.send(output);
+  // })
+  // .catch(errorThatComesBack => {
+  //   console.log(errorThatComesBack);
+  //   res.status(500).send('Sorry something went wrong');
+  // });
 }
 
 function Park(userData) {
@@ -109,6 +123,6 @@ function Park(userData) {
 
 //_______Initialization______
 client.connect()
-  .then(()=>{
+  .then(() => {
     app.listen(PORT, console.log(`App is up on http://${PORT}.`));
   });
