@@ -125,4 +125,10 @@ function Park(userData) {
 client.connect()
   .then(() => {
     app.listen(PORT, console.log(`App is up on http://${PORT}.`));
+  })
+  .catch(error => {
+    console.log(error);
+    app.listen(PORT, console.log(`App is up on http://${PORT}.`));
   });
+
+
