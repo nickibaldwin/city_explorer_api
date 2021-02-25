@@ -39,6 +39,17 @@ Estimate of time needed to complete: 5 hours
 
 Start time: 4:30pm
 
-Finish time:
+Finish time: 9pm
 
-Actual time needed to complete:
+Actual time needed to complete: 4.5 hours (not complete)
+
+
+Number and name of feature: SQL Database
+
+Estimate of time needed to complete: 5 hours
+
+Start time: 4pm
+
+Finish time: 
+
+Actual time needed to complete: 
