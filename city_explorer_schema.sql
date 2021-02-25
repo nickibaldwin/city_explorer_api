@@ -1,0 +1,4 @@
+-- CREATE TABLE city_explorer (
+--     id SERIAL PRIMARY KEY,
+--     name: 
+-- )
