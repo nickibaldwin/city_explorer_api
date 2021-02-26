@@ -78,6 +78,7 @@ function handleGetWeather(req, res) {
     .then(userData => {
       // console.log(userData.body)
       const output = [];
+      //TODO refactor for loop below, like     const output = arr.map(park => new Park(park));
       for (let i = 0; i < userData.body.data.length; i++) {
         output.push(new Weather(userData.body.data[i]));
       }
