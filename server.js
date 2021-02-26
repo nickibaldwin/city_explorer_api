@@ -24,6 +24,7 @@ const GEOCODE_KEY = process.env.GEOCODE_API_KEY;
 const WEATHER_KEY = process.env.WEATHER_API_KEY;
 const PARKS_KEY = process.env.PARKS_API_KEY;
 const MOVIE_KEY = process.env.MOVIE_API_KEY;
+const YELP_KEY = process.env.YELP_API_KEY;
 
 
 //_______Routes______
@@ -32,12 +33,7 @@ app.get('/location', locationCallback);
 app.get('/weather', handleGetWeather);
 app.get('/parks', handleParks);
 app.get('/movies', movieCallback);
-// app.get('/yelp', getYelp);
-
-// function getYelp(req, res) {
-//   const
-// }
-// ?/limit --- find the rest of this in the yelp API. Start = 5? Use if statement
+app.get('/yelp', yelpCallback);
 
 function locationCallback(req, res) {
 
@@ -118,7 +114,7 @@ function Park(userData) {
 }
 
 
-function movieCallback(req ,res) {
+function movieCallback(req, res) {
   const movie = req.query.search_query;
   const url = `https://api.themoviedb.org/3/search/movie?api_key=${MOVIE_KEY}&language=en-US&query=${movie}&page=1&include_adult=false`;
 
@@ -143,9 +139,35 @@ function Movie(userData) {
   this.released_on = userData.release_date;
 }
 
-// function yelpCallback(req, res) {
-//   const 
+function yelpCallback(req, res) {
+  const yelp = (req.query.page - 1) * 5;
+  const url = `https://api.yelp.com/v3/businesses/search?term=restaurant&limit=5&latitude=${req.query.latitude}&longitude=${req.query.longitude}&offset=${yelp}`;
+
+  superagent.get(url).set('Authorization', `bearer ${YELP_KEY}`)
+    .then(returnedYelp => {
+      const arr = returnedYelp.body.businesses.map(yelpOutput);
+      function yelpOutput(info) {
+        return new Restaurant(info);
+      }
+      res.send(arr);
+    })
+    .catch(error => {
+      res.status(500).send('Ooops, I broke it again', error);
+    });
+
+  function Restaurant(userData) {
+    this.name = userData.name;
+    this.image_url = userData.image_url;
+    this.price = userData.price;
+    this.rating = userData.rating;
+    this.url = userData.url;
+  }
+}
+
+// function getYelp(req, res) {
+//   const
 // }
+// ?/limit --- find the rest of this in the yelp API. Start = 5? Use if statement
 //_______Initialization______
 client.connect()
   .then(() => {

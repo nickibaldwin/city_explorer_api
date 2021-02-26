@@ -21,7 +21,7 @@ Build an app for travelers; include the weather and local restaurants.
 ## Credits and Collaborations
 <!-- Give credit (and a link) to other people or resources that helped you build this application. -->
 
-Number and name of feature: Added location and weather.
+- Number and name of feature: Added location and weather.
 
 Estimate of time needed to complete: 5 hours
 
@@ -31,9 +31,7 @@ Finish time: 8:30pm
 
 Actual time needed to complete: 4 hours
 
-
-
-Number and name of feature: Data Formatting, Locations, Weather, Parks
+- Number and name of feature: Data Formatting, Locations, Weather, Parks
 
 Estimate of time needed to complete: 5 hours
 
@@ -43,8 +41,7 @@ Finish time: 9pm
 
 Actual time needed to complete: 4.5 hours (not complete)
 
-
-Number and name of feature: SQL Database
+- Number and name of feature: SQL Database
 
 Estimate of time needed to complete: 5 hours
 
@@ -54,12 +51,12 @@ Finish time: 9:30pm
 
 Actual time needed to complete: 5.5 hours
 
-Number and name of feature: Movies/Yelp Added, and fixed Heroku
+- Number and name of feature: Movies/Yelp Added, and fixed Heroku
 
 Estimate of time needed to complete: 5 hours
 
-Start time: 2pmpm
+Start time: 2pm
 
-Finish time: 
+Finish time: 8:30pm
 
-Actual time needed to complete: 
+Actual time needed to complete: 6.5 hours
