@@ -39,7 +39,7 @@ app.get('/parks', handleParks);
 
 function locationCallback(req, res) {
 
-  const sqlQueryStr = 'SELECT * FROM cities WHERE search_query=$1';
+  const sqlQueryStr = 'SELECT * FROM city_explorer_table WHERE search_query=$1';
   const sqlQueryArr = [req.query.city];
 
   client.query(sqlQueryStr, sqlQueryArr)
@@ -57,6 +57,10 @@ function locationCallback(req, res) {
             res.send(output);
           });
       }
+    })
+    .catch(error => {
+      console.log(error);
+      res.status(500).send('Ooops, I broke it again');
     });
 }
 
