@@ -53,3 +53,13 @@ Start time: 4pm
 Finish time: 9:30pm
 
 Actual time needed to complete: 5.5 hours
+
+Number and name of feature: Movies/Yelp Added, and fixed Heroku
+
+Estimate of time needed to complete: 5 hours
+
+Start time: 2pmpm
+
+Finish time: 
+
+Actual time needed to complete: 
